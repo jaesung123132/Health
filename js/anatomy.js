@@ -47,11 +47,18 @@
 
   Anatomy.prototype.load = async function (lod, base) {
     base = base || 'assets/anatomy/';
-    const [meta, bin, dec] = await Promise.all([
-      fetch(base + 'anatomy.json').then(r => { if (!r.ok) throw new Error('anatomy.json ' + r.status); return r.json(); }),
-      fetch(base + 'anatomy-' + lod + '.bin').then(r => { if (!r.ok) throw new Error('bin ' + r.status); return r.arrayBuffer(); }),
-      getDecoder()
-    ]);
+    const decP = getDecoder();
+    const meta = await fetch(base + 'anatomy.json').then(r => { if (!r.ok) throw new Error('anatomy.json ' + r.status); return r.json(); });
+    // 저장소에서는 바이너리(.bin), 바이너리를 못 올리는 곳에서는 base64 텍스트(.txt)
+    const file = (meta.files && meta.files[lod]) || ('anatomy-' + lod + '.bin');
+    const bin = await fetch(base + file).then(r => { if (!r.ok) throw new Error(file + ' ' + r.status); return meta.enc === 'b64' ? r.text() : r.arrayBuffer(); })
+      .then(x => {
+        if (typeof x !== 'string') return x;
+        const s = atob(x.trim()), u = new Uint8Array(s.length);
+        for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i);
+        return u.buffer;
+      });
+    const dec = await decP;
     this.meta = meta; this.lod = lod;
     const src = new Uint8Array(bin);
     const geo = {};

@@ -65,6 +65,8 @@ if (!RAW || !OUT) { console.error('사용: --raw <dir> --out <dir>'); process.ex
   }
   delete meta.header.streams;
   meta.lods = lods;
+  meta.enc = 'bin';
+  meta.files = { hi: 'anatomy-hi.bin', lo: 'anatomy-lo.bin' };
   meta.license = 'BodyParts3D © The Database Center for Life Science (CC BY-SA 2.1 JP), Z-Anatomy by Gauthier Kervyn (CC BY-SA 4.0). 가공: BodyExplorer(JohanBellander) 데이터를 간소화·재구성.';
   fs.writeFileSync(path.join(OUT, 'anatomy.json'), JSON.stringify(meta));
   console.log('anatomy.json', (fs.statSync(path.join(OUT, 'anatomy.json')).size / 1e3).toFixed(1), 'KB');
