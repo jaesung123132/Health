@@ -1,0 +1,17 @@
+이 폴더의 해부 모델(anatomy.json, anatomy-hi.bin, anatomy-lo.bin)은 아래 데이터를 가공한 것으로,
+원본과 같은 크리에이티브 커먼즈 저작자표시-동일조건변경허락(CC BY-SA) 조건을 따릅니다.
+
+- BodyParts3D, (c) The Database Center for Life Science
+  CC Attribution-Share Alike 2.1 Japan  https://creativecommons.org/licenses/by-sa/2.1/jp/deed.en
+  https://lifesciencedb.jp/bp3d/
+- Z-Anatomy by Gauthier Kervyn
+  CC BY-SA 4.0  https://creativecommons.org/licenses/by-sa/4.0/
+  https://www.z-anatomy.com/
+- 정리된 메시 출처: BodyExplorer (https://github.com/JohanBellander/BodyExplorer) public/anatomy.glb, public/skeleton.glb
+
+가공 내용: 구조물 선택(근육 224개, 뼈 189개), 좌표 변환, 좌우 이름 오류 1건 수정(flexor pollicis brevis),
+간소화(PC용 25만, 휴대폰용 10만 삼각형), 스킨 가중치·근육 중심선 계산, 양자화와 meshoptimizer 압축.
+다시 만드는 방법은 tools/anatomy/README.md 를 보세요.
+
+This folder contains a derivative of BodyParts3D (CC BY-SA 2.1 JP) and Z-Anatomy (CC BY-SA 4.0),
+distributed under the same CC BY-SA terms.

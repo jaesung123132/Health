@@ -70,7 +70,7 @@
       floor: g('--floor3d'), mat: g('--mat3d'), edge: g('--edge3d'), guide: g('--guide3d'), ref: g('--ref3d'), wood: g('--wood3d'), metal: g('--metal3d'),
       sky: g('--sky3d'), ground: g('--ground3d') };
   }
-  const retheme = () => { if (stage) stage.setColors(themeColors()); };
+  const retheme = () => { if (stage) stage.setColors(themeColors()); themeSig++; };
   if (window.matchMedia) { const mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', retheme); }
   new MutationObserver(retheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
 
@@ -111,6 +111,177 @@
   window.addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(fitStageHeight, 150); });
   $('#views').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { applyView(b.dataset.v); hideHint(); } });
 
+  /* ---------- 해부 모드 (근육·뼈) ---------- */
+  let anat = null, anatLoading = null;
+  state.look = 'mannequin'; state.tint = 1;
+  function lodPick() {
+    const small = Math.min(screen.width || 9999, screen.height || 9999) < 820;
+    const weak = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4;
+    return (small || weak || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) ? 'lo' : 'hi';
+  }
+  function ensureAnatomy() {
+    if (anat && anat.ready) return Promise.resolve(anat);
+    if (anatLoading) return anatLoading;
+    if (!stage || !PL.Anatomy) return Promise.reject(new Error('3D를 쓸 수 없음'));
+    const lod = /[?&]lod=(hi|lo)\b/.exec(location.search) ? RegExp.$1 : lodPick();
+    $('#anloadTxt').textContent = `해부 모델을 불러오는 중 (${lod === 'hi' ? '1.6' : '0.7'}MB)`;
+    $('#anload').hidden = false;
+    const a = new PL.Anatomy(stage);
+    anatLoading = a.load(lod).then(() => { anat = a; $('#anload').hidden = true; return a; }).catch(err => {
+      console.error('해부 모델 로드 실패', err);
+      $('#anloadTxt').textContent = '해부 모델을 불러오지 못했습니다. 다시 눌러 주세요.';
+      setTimeout(() => { $('#anload').hidden = true; }, 2600);
+      anatLoading = null; setLook('mannequin');
+      throw err;
+    });
+    return anatLoading;
+  }
+  function setLook(l) {
+    state.look = l;
+    $$('#look button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.l === l)));
+    const on = l !== 'mannequin';
+    $('#tint').hidden = l !== 'muscle';
+    $('#tgMuscle').hidden = on;
+    if (!stage) return;
+    stage.man.setShadowOnly(on);
+    closeCard();
+    if (!on) { if (anat) anat.show(false); updateLegend(); renderWork(); return; }
+    ensureAnatomy().then(a => {
+      if (state.look === 'mannequin') return;
+      a.setLayer(state.look); a.setColorMode(state.tint); a.show(true);
+      updateLegend(); renderWork();
+    }).catch(() => { /* 위에서 안내 */ });
+    updateLegend();
+  }
+  $('#look').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) setLook(b.dataset.l); });
+  // 넓은 화면에서는 '마네킹·근육·뼈' 전환을 3D 화면 오른쪽 위에, 좁은 화면에서는 아래 조작줄에
+  const lookEl = $('#look'), lookHome = lookEl.parentNode, viewsBar = $('.views');
+  function placeLook() {
+    const wide = window.innerWidth >= 760;
+    if (wide && lookEl.parentNode !== viewsBar) { viewsBar.appendChild(lookEl); lookEl.classList.add('right'); }
+    else if (!wide && lookEl.parentNode !== lookHome) { lookHome.insertBefore(lookEl, lookHome.firstChild); lookEl.classList.remove('right'); }
+    // 좁은 화면: 근육 설명 카드와 범례는 3D 화면을 가리지 않게 아래로
+    const inl = window.innerWidth < 700, after = stageEl.nextSibling;
+    ['#legend', '#mcard'].forEach(sel => {
+      const el = $(sel);
+      if (inl && el.parentNode === stageEl) { stageEl.parentNode.insertBefore(el, after); el.classList.add('inline'); }
+      else if (!inl && el.parentNode !== stageEl) { stageEl.appendChild(el); el.classList.remove('inline'); }
+    });
+    measureSafe();
+  }
+  placeLook();
+  window.addEventListener('resize', placeLook);
+  $('#tint').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    state.tint = +b.dataset.c; $$('#tint button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    if (anat) anat.setColorMode(state.tint);
+    updateLegend();
+  });
+  function updateLegend() {
+    const lg = $('#legend');
+    if (state.look !== 'muscle' || !$('#mcard').hidden) { lg.hidden = true; return; }
+    lg.hidden = false;
+    lg.innerHTML = state.tint === 1 ? '<span><i style="background:#a4908d"></i>거의 안 씀</span><span><i style="background:#e0675a"></i>씀</span><span><i style="background:#ff9a4a"></i>가장 많이 씀</span><span>추정치</span>'
+      : state.tint === 2 ? '<span><i style="background:#ff8a4c"></i>짧아지는 중</span><span><i style="background:#62b0ff"></i>늘어나는 중</span><span><i style="background:#ad9f9c"></i>길이 그대로</span>'
+        : '<span><i style="background:#b5483f"></i>근육</span><span><i style="background:#e8dcc8"></i>힘줄·근막</span><span><i style="background:#efe6d2"></i>뼈</span>';
+  }
+  // 근육 길이 변화 속도: 동작 시간 기준 ±0.06초 자세를 함께 계산
+  const Sm = engineOK ? PL.newSkel() : null, Sp = engineOK ? PL.newSkel() : null;
+  const actCache = {};
+  function actMap(ex, eff) {
+    let base = actCache[ex.id];
+    if (!base) {
+      base = {};
+      Object.keys(ex.act || {}).forEach(g => (D.MG[g] || []).forEach(n => { base[n] = Math.max(base[n] || 0, ex.act[g]); }));
+      actCache[ex.id] = base;
+    }
+    const out = {};
+    for (const k in base) out[k] = base[k] * eff;
+    return out;
+  }
+  let lastPose = null;
+  if (stage) stage.onPose = (S, P) => {
+    lastPose = P;
+    if (!anat || !anat.ready || !anat.visible) return;
+    const ex = state.ex, e = 0.06;
+    PL.solve(PL.poseAt(ex, state.t - e, state.bad), Sm);
+    PL.solve(PL.poseAt(ex, state.t + e, state.bad), Sp);
+    anat.update(S, Sm, Sp, 2 * e, actMap(ex, P.eff == null ? 1 : P.eff));
+  };
+  // 근육 누르면 이름·하는 일·지금 상태
+  const mcard = $('#mcard');
+  function groupOf(base) { for (const g in D.MG) if (D.MG[g].indexOf(base) >= 0) return g; return null; }
+  function stateText(a, v) {
+    if (a < 0.12) return Math.abs(v) > 0.06 ? (v > 0 ? '짧아지는 중, 거의 힘 안 씀' : '늘어나는 중, 거의 힘 안 씀') : '거의 쉬는 중';
+    if (v > 0.06) return '짧아지며 힘냄 (단축성)';
+    if (v < -0.06) return '늘어나며 버팀 (신장성)';
+    return '길이를 유지하며 버팀 (등척성)';
+  }
+  function renderCard() {
+    if (!anat || anat.sel < 0) return;
+    const i = anat.sel, m = anat.meta.muscles[i], g = groupOf(anat.base[i]), a = anat.act[i] || 0;
+    mcard.innerHTML = `<button class="x" aria-label="닫기">×</button><b>${esc(m.ko)}</b><span class="en">${m.side === 'L' ? '왼쪽' : '오른쪽'} ${esc(m.g)}, ${esc(m.en)}</span>` +
+      `<p>${esc((g && D.MINFO[g]) || '이 운동에서는 주로 자세를 받쳐 주는 역할을 합니다.')}</p>` +
+      `<div class="st"><i><s style="width:${Math.round(a * 100)}%"></s></i>${esc(stateText(a, anat.velo[i] || 0))}</div>`;
+    mcard.hidden = false;
+  }
+  function showHit(hit) {
+    if (!hit) { closeCard(); return; }
+    if (hit.muscle != null) { anat.sel = hit.muscle; renderCard(); }
+    else {
+      anat.sel = -1;
+      const b = anat.meta.boneParts[hit.bone];
+      if (!b) { closeCard(); return; }
+      mcard.innerHTML = `<button class="x" aria-label="닫기">×</button><b>${esc(b.ko)}</b><span class="en">${b.side ? (b.side === 'L' ? '왼쪽, ' : '오른쪽, ') : ''}${esc(b.en)}</span>`;
+      mcard.hidden = false;
+    }
+    updateLegend();
+  }
+  function closeCard() { mcard.hidden = true; if (anat) anat.sel = -1; updateLegend(); }
+  mcard.addEventListener('click', (e) => { if (e.target.closest('.x')) closeCard(); });
+  let downAt = null;
+  stageEl.addEventListener('pointerdown', (e) => { downAt = { x: e.clientX, y: e.clientY, t: performance.now() }; });
+  stageEl.addEventListener('pointerup', (e) => {
+    const d0 = downAt; downAt = null;
+    if (!d0 || !anat || !anat.visible || state.look === 'mannequin' || stage.multi) return;
+    if (Math.hypot(e.clientX - d0.x, e.clientY - d0.y) > 6 || performance.now() - d0.t > 500) return;
+    if (e.target.closest('button, input, .playbar, .views, .mcard')) return;
+    const r = stageEl.getBoundingClientRect();
+    showHit(anat.pick(e.clientX - r.left, e.clientY - r.top));
+  });
+  // 지금 일하는 근육 + 관절 각도
+  function renderWork() {
+    const box = $('#work'); if (!box) return;
+    if (state.look !== 'muscle' || !anat || !anat.ready) { box.hidden = true; return; }
+    // 근육 묶음별로: 활성도 최대값, 길이 변화 속도 평균
+    const byBase = anat.byBase, rows = [];
+    Object.keys(D.MG).forEach(g => {
+      let a = 0, v = 0, n = 0;
+      D.MG[g].forEach(b => (byBase[b] || []).forEach(i => { a = Math.max(a, anat.act[i]); v += anat.velo[i]; n++; }));
+      if (n && a > 0.01) rows.push({ k: D.MGKO[g] || g, a, v: v / n });
+    });
+    rows.sort((x, y) => y.a - x.a); rows.length = Math.min(rows.length, 7);
+    const jt = anat.jt, P = lastPose, S = stage.S;
+    const deg = (x) => `${Math.round(x)}°`;
+    const prot = S.sc[2], elev = S.sc[3];
+    const joints = jt ? [
+      ['어깨뼈 앞뒤', prot >= 0 ? `전인 ${Math.round(prot * 100)}%` : `후인 ${Math.round(-prot * 100)}%`],
+      ['어깨뼈 위아래', elev >= 0 ? `올림 ${Math.round(elev * 100)}%` : `내림 ${Math.round(-elev * 100)}%`],
+      ['어깨뼈 위쪽 회전', deg(jt.ur[1])],
+      ['팔 들어 올림', deg(jt.elev[1])],
+      ['위팔 회전', jt.er[1] >= 0 ? `외회전 ${deg(jt.er[1])}` : `내회전 ${deg(-jt.er[1])}`],
+      ['아래팔 비틀림', jt.tw[1] >= 0 ? `엎침 ${deg(jt.tw[1])}` : `뒤침 ${deg(-jt.tw[1])}`],
+      ['팔꿈치', deg(PL.angleAt(S.sh[1], S.el[1], S.wr[1]))],
+      ['허리(요추)', P ? (P.sp[0] >= 0 ? `굽힘 ${deg(P.sp[0])}` : `젖힘 ${deg(-P.sp[0])}`) : '-']
+    ] : [];
+    box.hidden = false;
+    box.innerHTML = `<h4>지금 일하는 근육 <small>활성도는 추정치, 각도는 오른쪽</small></h4>` +
+      rows.map(r => `<div class="wrow"><span>${esc(r.k)}</span><i><s style="width:${Math.round(r.a * 100)}%"></s></i>` +
+        `<em class="${r.v > 0.06 ? 'up' : r.v < -0.06 ? 'dn' : ''}">${r.v > 0.06 ? '짧아짐' : r.v < -0.06 ? '늘어남' : '버팀'}</em></div>`).join('') +
+      `<div class="joints">${joints.map(([k, v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>`;
+  }
+  let workT = 0;
+
   /* ---------- 운동 선택 ---------- */
   function selectEx(id, keepPhase) {
     const ex = EX[id]; if (!ex) return;
@@ -122,7 +293,8 @@
     }
     state.ex = ex; state.t = 0;
     if (state.bad && !ex.mistake) state.bad = false;
-    renderChips(); renderDetail();
+    closeCard();
+    renderChips(); renderDetail(); renderWork();
     if (stage && ex._keys) {
       stage.setExercise(ex);
       applyView(state.view === 'free' ? 'side' : state.view, true);
@@ -148,6 +320,7 @@
   function renderDetail() {
     const e = state.ex, ph = D.phases[e.phase];
     detail.innerHTML = `
+      <section class="work" id="work" hidden></section>
       <header class="dh"><div class="dpic">${e._pic}</div><div><p class="dtag">${esc(ph.name)} 단계</p><h3>${esc(e.name)}</h3><p class="den">${esc(e.en)}</p></div></header>
       <dl class="rx"><div><dt>처방</dt><dd>${esc(e.rx)}</dd></div><div><dt>템포</dt><dd>${esc(e.tempo || '—')}</dd></div><div><dt>휴식</dt><dd>${esc(e.rest)}</dd></div></dl>
       <p class="why">${esc(e.why)}</p>
@@ -267,15 +440,21 @@
   /* ---------- 렌더 루프 ---------- */
   let visible = true, last = performance.now(), lastStep = '';
   if ('IntersectionObserver' in window) new IntersectionObserver((en) => { visible = en[0].isIntersecting; }).observe(stageEl);
+  let lastSig = '', themeSig = 0;
   function loop(now) {
     requestAnimationFrame(loop);
     const dt = Math.min(.05, Math.max(0, (now - last) / 1000)); last = now;
     if (!stage || !state.ex || !state.ex._keys || !visible || document.hidden) return;
     const ex = state.ex;
     if (state.playing && !scrubbing) state.t = (state.t + dt * state.speed) % ex.dur;
+    // 멈춰 있고 아무것도 바뀌지 않으면 다시 그리지 않음(휴대폰 배터리·발열)
+    const sig = [ex.id, state.t.toFixed(4), state.bad, state.guides, state.look, state.tint, anat ? anat.sel : -1, anat && anat.ready, stage.multi, stage.w, stage.h, themeSig].join('|');
+    if (!state.playing && sig === lastSig && stage.settled()) return;
+    lastSig = sig;
     const P = PL.poseAt(ex, state.t, state.bad);
     const PG = state.bad ? PL.poseAt(ex, state.t, false) : null;
     curKi = P.ki;
+    if (state.look === 'muscle' && now - workT > 300) { workT = now; renderWork(); if (!mcard.hidden && anat && anat.sel >= 0) renderCard(); }
     stage.render(dt, P, PG, state.guides && !stage.multi ? guideFn : null);
     if (!state.guides || stage.multi) labs = [];
     if (P.step !== lastStep) { stepEl.textContent = P.step || ''; lastStep = P.step; }
@@ -368,5 +547,6 @@
   requestAnimationFrame(loop);
 
   // 테스트·캡처용 훅
-  window.PLAPP = { state, selectEx, applyView, setBad, setPlaying, setPhase, stage: () => stage, seek: (t) => { state.t = t; } };
+  window.PLAPP = { state, selectEx, applyView, setBad, setPlaying, setPhase, setLook, stage: () => stage, anat: () => anat, ensureAnatomy, seek: (t) => { state.t = t; },
+    setTint: (c) => { const b = $(`#tint button[data-c="${c}"]`); if (b) b.click(); }, pickAt: (x, y) => { if (anat) showHit(anat.pick(x, y)); } };
 })();

@@ -62,6 +62,20 @@
 - **주간 루틴**: 단계와 주 3/4회를 고르면 세션 구성이 나오고, 항목을 누르면 3D로 이동.
 - **레벨 테스트**: 현재 최대치를 넣으면 시작할 단계와 남은 양을 막대로 보여 줌(입력값은 이 브라우저에만 저장).
 
+### 해부 모드 (근육·뼈)
+
+3D 화면의 **마네킹 / 근육 / 뼈** 전환으로 실제 해부 모델(BodyParts3D·Z-Anatomy의 근육 224개, 뼈 189개)을 같은 동작으로 움직여 볼 수 있습니다.
+
+- **어깨뼈(견갑골)**: 전인·후인 때 갈비뼈를 감싸며 미끄러지고, 팔을 들면 위쪽으로 회전합니다(견갑상완 리듬).
+- **아래팔**: 손 방향에 따라 엎침·뒤침으로 비틀립니다(아래팔 근육이 꼬이지 않게 비틀림을 나눠 줌).
+- **근육 모양**: 근육 중심선 길이가 줄면 굵어지고 늘면 가늘어집니다.
+- **색으로 보기**: *쓰는 정도*(운동별 추정 활성도), *늘어남·줄어듦*(지금 짧아지는지 늘어나는지), *해부 색*.
+- **근육 누르기**: 이름, 하는 일, 지금 상태(단축성·신장성·등척성)를 보여 줍니다.
+- **지금 일하는 근육**: 근육 묶음별 활성도와 함께 어깨뼈 전인·하강, 위쪽 회전, 팔 들어 올림, 위팔 회전, 아래팔 엎침, 팔꿈치, 허리 각도를 실시간으로 표시합니다.
+- 휴대폰은 0.7MB(10만 삼각형), PC는 1.6MB(25만 삼각형) 모델을 처음 켤 때만 불러옵니다. 원본은 34.8MB입니다.
+
+활성도는 근전도 연구와 역학을 바탕으로 한 **추정치**이고, 근육 변형은 실시간 근사(부피 보존)입니다.
+
 ## 3. 자세는 어떻게 계산하나
 
 아바타 자세는 손으로 그린 것이 아니라 매 프레임 계산합니다.
@@ -76,11 +90,15 @@
 ## 4. 파일 구조
 
 ```
-index.html          화면 구성과 스타일
-js/engine.js        3D 마네킹, IK, 자세 계산기, 렌더러, 카메라, 가이드선, 픽토그램
-js/data.js          단계, 운동(키프레임과 자세 설명), 주간 루틴, 테스트 기준, 출처
-js/app.js           화면 조작
-tools/check-poses.js 자세 수치 검증
+index.html              화면 구성과 스타일
+js/engine.js            3D 마네킹, IK, 자세 계산기, 렌더러, 카메라, 가이드선, 픽토그램
+js/anatomy.js           해부 모드: 근육·뼈 모델을 관절에 연결, 견갑골·아래팔 비틀림, 근육 길이·색
+js/data.js              단계, 운동(키프레임과 자세 설명), 주간 루틴, 테스트 기준, 근육 활성도, 출처
+js/app.js               화면 조작
+js/vendor/              meshoptimizer 디코더(MIT)
+assets/anatomy/         압축된 해부 모델(CC BY-SA, LICENSE.txt 참고)
+tools/check-poses.js    자세 수치 검증
+tools/anatomy/          해부 모델 가공 파이프라인(README 참고)
 ```
 
 운동을 추가하거나 고치려면 `js/data.js`의 `exercises`에 키프레임(`keys`)과 설명을 넣으면 됩니다. 각 키프레임은 자세 계산기(`prone`, `planche`, `pike`, `quad`, `supine`, `bars`, `row`)에 넘길 값입니다.
@@ -97,5 +115,13 @@ tools/check-poses.js 자세 수치 검증
 - [Liftosaur: Pseudo planche push-up](https://www.liftosaur.com/exercises/bodyweight-pseudo-planche-pushup)
 - [Equinox: Planche progression](https://equinox.com/articles/2020/03/planche-progression-workout)
 - [Stronger by Science: Biceps tendinopathy](https://www.strongerbyscience.com/biceps-tendinopathy/)
+
+- 해부 모델: [BodyParts3D](https://lifesciencedb.jp/bp3d/) © The Database Center for Life Science (CC BY-SA 2.1 JP), [Z-Anatomy](https://www.z-anatomy.com/) by Gauthier Kervyn (CC BY-SA 4.0), 정리된 메시 [BodyExplorer](https://github.com/JohanBellander/BodyExplorer)
+
+## 라이선스
+
+- 앱 코드: 아직 라이선스를 정하지 않았습니다. 다른 사람이 쓰게 하려면 LICENSE 파일을 추가하세요.
+- `assets/anatomy/` 해부 모델: 원본을 따라 CC BY-SA (`assets/anatomy/LICENSE.txt`)
+- `js/vendor/` meshoptimizer 디코더: MIT
 
 > 일반적인 운동 정보이며 의학적 조언이 아닙니다. 통증이나 기존 부상이 있다면 전문가와 상담하세요.

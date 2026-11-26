@@ -98,6 +98,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,.s
 .stage canvas.gl{position:absolute;inset:0;width:100%;height:100%;display:block}
 .views{position:absolute;top:10px;left:10px;right:10px;display:flex;flex-wrap:wrap;gap:4px;z-index:3;pointer-events:none}
 .views .seg{background:var(--glass);border-color:transparent;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);pointer-events:auto}
+.views .seg.right{margin-left:auto}
 .labels{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
 .lbl{position:absolute;left:0;top:0;font-size:13px;font-weight:500;line-height:1.2;padding:5px 10px;border-radius:999px;background:#0b1533;color:#ffffff;white-space:nowrap}
 .lbl[data-k="ok"]{color:#ffd84d}
@@ -111,6 +112,36 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,.s
 .badwarn{background:var(--accent);color:#fff;font-size:13px;font-weight:500;padding:6px 10px;border-radius:10px}
 .hint{position:absolute;right:12px;bottom:76px;z-index:3;font-size:13px;color:var(--ink);background:var(--glass);padding:5px 9px;border-radius:8px;pointer-events:none}
 .nogl{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;z-index:4;color:var(--ink)}
+.anload{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4;display:flex;gap:10px;align-items:center;background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:12px 16px;border-radius:12px;font-size:14px;font-weight:500}
+.spin{width:18px;height:18px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--blue);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.mcard{position:absolute;left:10px;right:10px;bottom:72px;z-index:4;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 44px 12px 14px;box-shadow:0 8px 24px rgba(11,21,51,.16);max-width:460px}
+.mcard b{display:block;font-size:16px}
+.mcard .en{color:var(--muted);font-size:13px}
+.mcard p{margin:6px 0 0;font-size:14px;line-height:1.5}
+.mcard .st{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;font-weight:500}
+.mcard .st i{flex:0 0 72px;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.mcard .st i s{display:block;height:100%;background:var(--accent)}
+.mcard .x{position:absolute;top:6px;right:6px;width:36px;height:36px;border:0;border-radius:10px;background:transparent;font-size:20px;line-height:1;cursor:pointer;color:var(--muted)}
+.mcard.inline{position:relative;left:auto;right:auto;bottom:auto;margin-top:10px;max-width:none;box-shadow:none}
+.legend.inline{position:static;margin-top:8px;max-width:none;background:var(--tint)}
+.legend{position:absolute;left:10px;bottom:72px;z-index:3;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:6px 10px;border-radius:10px;font-size:13px;pointer-events:none;max-width:calc(100% - 20px)}
+.legend span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.work{border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.work h4{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.work h4 small{font-weight:400;color:var(--muted);font-size:13px}
+.wrow{display:grid;grid-template-columns:minmax(0,1fr) 70px minmax(0,auto);gap:10px;align-items:center;padding:5px 0;border-top:1px solid var(--line);font-size:14px}
+.wrow:first-of-type{border-top:0}
+.wrow i{height:8px;border-radius:4px;background:var(--line);overflow:hidden;display:block}
+.wrow i s{display:block;height:100%;background:var(--accent)}
+.wrow em{font-style:normal;font-size:13px;color:var(--muted);white-space:nowrap}
+.wrow em.up{color:var(--accent)}
+.wrow em.dn{color:var(--blue)}
+.joints{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px;margin-top:10px;font-size:13px}
+.joints div{display:flex;justify-content:space-between;gap:8px;border-top:1px dashed var(--line);padding-top:5px}
+.joints b{font-weight:700;white-space:nowrap}
 .playbar{position:absolute;left:10px;right:10px;bottom:10px;z-index:3;display:flex;align-items:center;gap:10px;padding:6px 8px 6px 6px;border-radius:16px;background:var(--glass);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);cursor:default}
 .playbar .seg{background:transparent;border-color:var(--line)}
 .playbtn{width:48px;height:48px;border-radius:50%;border:0;background:var(--blue);color:#fff;display:grid;place-items:center;cursor:pointer;flex:0 0 auto}
@@ -126,7 +157,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,.s
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px;background:var(--bg)}
 .seg button{font-size:14px;font-weight:500;border:0;background:transparent;padding:7px 11px;border-radius:9px;cursor:pointer;min-height:38px;white-space:nowrap}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-.toggles{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.toggles{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
 .tg{font-size:14px;font-weight:500;padding:9px 15px;border-radius:999px;border:1px solid var(--line);background:var(--bg);cursor:pointer;min-height:44px;display:inline-flex;gap:8px;align-items:center}
 .tg::before{content:"";width:10px;height:10px;border-radius:50%;border:2px solid currentColor;flex:0 0 auto}
 .tg:hover{border-color:var(--ink)}
@@ -270,6 +301,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,.s
 .src span{display:block;color:var(--muted);font-size:14px}
 .foot{background:var(--tint);font-size:14px;color:var(--muted)}
 .foot p{margin:0;max-width:80ch}
+.foot p+p{margin-top:8px}
 </style>
 </head>
 <body>
@@ -302,12 +334,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,.s
           <div class="qlabels" id="qlabels" hidden><span>측면</span><span>정면</span><span>위</span><span>대각</span></div>
           <div class="cap" id="cap"><span class="step" id="step">준비 중</span><span class="badwarn" id="badwarn" hidden>빨간 부분이 흔한 실수, 반투명이 올바른 자세</span></div>
           <span class="hint" id="hint">드래그해서 돌려 보기</span>
+          <div class="anload" id="anload" hidden><span class="spin"></span><span id="anloadTxt">해부 모델을 불러오는 중</span></div>
+          <div class="mcard" id="mcard" hidden></div>
+          <div class="legend" id="legend" hidden></div>
           <div class="nogl" id="nogl" hidden><p>이 기기에서는 3D 화면을 표시할 수 없습니다.<br>아래 자세 설명과 루틴은 그대로 볼 수 있습니다.</p></div>
           <div class="playbar">
             <button class="playbtn" id="play" aria-label="일시정지"></button>
             <div class="scrub"><input type="range" id="scrub" min="0" max="1000" value="0" aria-label="동작 진행 위치"><div class="ticks" id="ticks"></div></div>
             <div class="seg" id="speed" role="group" aria-label="재생 속도"><button data-s="0.5" aria-pressed="false">0.5×</button><button data-s="1" aria-pressed="true">1×</button></div>
           </div>
+        </div>
+        <div class="toggles">
+          <div class="seg" id="look" role="group" aria-label="겉모습"><button data-l="mannequin" aria-pressed="true">마네킹</button><button data-l="muscle" aria-pressed="false">근육</button><button data-l="bone" aria-pressed="false">뼈</button></div>
+          <div class="seg" id="tint" role="group" aria-label="근육 색" hidden><button data-c="1" aria-pressed="true">쓰는 정도</button><button data-c="2" aria-pressed="false">늘어남·줄어듦</button><button data-c="0" aria-pressed="false">해부 색</button></div>
         </div>
         <div class="toggles">
           <button class="tg" id="tgGuide" aria-pressed="true">가이드선</button>
@@ -369,12 +408,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,.s
 </section>
 
 <footer class="band foot">
-  <div class="wrap"><p>일반적인 운동 정보이며 의학적 조언이 아닙니다. 통증이나 기존 부상이 있다면 전문가와 상담하세요. 3D 자세는 평균 체형으로 계산한 예시라서, 실제 기울기는 팔 길이와 체형에 따라 달라집니다.</p></div>
+  <div class="wrap"><p>일반적인 운동 정보이며 의학적 조언이 아닙니다. 통증이나 기존 부상이 있다면 전문가와 상담하세요. 3D 자세는 평균 체형으로 계산한 예시라서, 실제 기울기는 팔 길이와 체형에 따라 달라집니다. 근육 활성도는 연구와 역학을 바탕으로 한 추정치입니다.</p>
+  <p>해부 모델: BodyParts3D © The Database Center for Life Science (CC BY-SA 2.1 JP), Z-Anatomy by Gauthier Kervyn (CC BY-SA 4.0). BodyExplorer가 정리한 메시를 간소화·압축해 사용했고, 가공한 모델(assets/anatomy)도 같은 CC BY-SA 조건을 따릅니다.</p></div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/vendor/meshopt_decoder.js"></script>
+<script src="js/vendor/meshopt_decoder_ref.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/data.js"></script>
+<script src="js/anatomy.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

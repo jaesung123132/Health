@@ -13,15 +13,15 @@
   const AX = V(1, 0, 0), ZA = V(0, 0, 1), ZERO = V(), QI = new T.Quaternion();
   const SIDES = [1, -1]; // 0 = 왼쪽(+X), 1 = 오른쪽(-X)
 
-  /* ---------- 신체 치수 (약 178cm 성인) ---------- */
+  /* ---------- 신체 치수 (해부 모델 BodyParts3D의 뼈에서 잰 관절 중심, 키 약 171cm) ---------- */
   const DIM = {
-    hip: [0.09, -0.07, 0], waist: [0, 0.09, -0.01], chest: [0, 0.16, 0],
-    neck: [0, 0.25, -0.012], sh: [0.175, 0.215, -0.005], head: [0, 0.165, 0.02],
-    ua: 0.31, fa: 0.26, th: 0.43, sk: 0.42, wristH: 0.033
+    hip: [0.0877, -0.0701, 0], waist: [0, 0.1093, -0.0115], chest: [0, 0.1027, -0.0169],
+    neck: [0, 0.2771, 0.012], sh: [0.1658, 0.2216, 0.0253], head: [0, 0.1855, 0.0171],
+    ua: 0.2733, fa: 0.2507, th: 0.4234, sk: 0.3917, wristH: 0.036
   };
   const ARM = DIM.ua + DIM.fa, LEG = DIM.th + DIM.sk;
-  const TOE = V(0, -0.045, 0.19), HEEL = V(0, -0.035, -0.062);
-  const FOOT_R = TOE.length(), FOOT_D = Math.atan2(0.045, 0.19);
+  const TOE = V(0, -0.064, 0.164), HEEL = V(0, -0.066, -0.036);
+  const FOOT_R = TOE.length(), FOOT_D = Math.atan2(-TOE.y, TOE.z);
   // 체절 질량비 (Dempster/Winter)
   const MASS = { head: .081, che: .216, abd: .139, pel: .142, ua: .028, fa: .016, hand: .006, th: .1, sk: .0465, ft: .0145 };
 
@@ -258,7 +258,10 @@
     const Dy = am.y - s0.y, Dz = am.z - s0.z, l1 = Math.hypot(Dy, Dz);
     const Wy = DIM.wristH, Wz = p.wz;
     const Sy = straightY(dx, p.lean) - p.drop, Sz = Wz + p.lean;
-    const toeZ = p.toeZ == null ? autoToe(p) : p.toeZ;
+    let toeZ = p.toeZ == null ? autoToe(p) : p.toeZ;
+    // 다리+발로 닿지 않을 만큼 기울이면 발끝이 뜨는 대신 바닥에서 살짝 끌려옴(실제로도 발이 미끄러짐)
+    const reach = l1 + FOOT_R - 1e-3;
+    if (Math.hypot(Sy, Sz - toeZ) > reach) toeZ = Sz - Math.sqrt(Math.max(0, reach * reach - Sy * Sy));
     const A = link2(Sy, Sz, 0, toeZ, l1, FOOT_R, 1);
     const beta = Math.atan2(A.z - Sz, A.y - Sy) - Math.atan2(Dz, Dy);
     P.q.setFromAxisAngle(AX, beta);
@@ -506,6 +509,8 @@
     if (k0.b === k1.b) P = B[k0.b](lerpParams(wrong ? k0.pm : k0.p, wrong ? k1.pm : k1.p, u));
     else { P = blendPose(wrong ? k0.PM : k0.P, wrong ? k1.PM : k1.P, u, newPose()); fixStraight(P, SK); }
     P.step = k0.lab; P.ki = i;
+    const ef = ex.effK, e0 = ef ? ef[i] : 1, e1 = ef ? ef[i < n - 1 ? i + 1 : 0] : 1;
+    P.eff = e0 + (e1 - e0) * u; P.u = u;
     return P;
   }
 
@@ -587,15 +592,18 @@
     shoulder: ['delt', 'trap', 'scap'], legs: ['th', 'sk', 'knee', 'quad', 'calf'], head: ['head', 'neck']
   };
   Mannequin.prototype.setState = function (hl, bad) {
+    this._hl = hl; this._bad = bad;
     const hs = new Set(), bs = new Set();
     hl.forEach(k => (GROUPS[k] || [k]).forEach(x => hs.add(x)));
     bad.forEach(k => (GROUPS[k] || [k]).forEach(x => bs.add(x)));
     const m = this.mats;
     this.all.forEach(mesh => {
       const key = mesh.userData.key, base = mesh.userData.base;
-      mesh.material = this.ghost ? m.body : bs.has(key) ? m.bad : hs.has(key) ? m.hl : (base === 'joint' ? m.joint : base === 'muscle' ? m.muscle : m.body);
+      mesh.material = this.ghost ? m.body : this.shadowOnly ? m.shadowOnly : bs.has(key) ? m.bad : hs.has(key) ? m.hl : (base === 'joint' ? m.joint : base === 'muscle' ? m.muscle : m.body);
     });
   };
+  // 해부 모드: 마네킹은 보이지 않고 그림자만 드리움(근육 메시는 그림자 계산에서 빼서 가볍게)
+  Mannequin.prototype.setShadowOnly = function (on) { this.shadowOnly = !!on; this.setState(this._hl || [], this._bad || []); };
   const _X = V(), _Y = V(), _Z = V();
   function limbQ(a, b, front, out) {
     _Y.subVectors(a, b).normalize();
@@ -720,6 +728,7 @@
     const mk = (o) => new T.MeshStandardMaterial(Object.assign({ roughness: .6, metalness: 0 }, o));
     this.mats = { body: mk({}), muscle: mk({}), joint: mk({ roughness: .45 }), hl: mk({ roughness: .5 }), bad: mk({ roughness: .5 }),
       floor: mk({ roughness: .95 }), mat: mk({ roughness: .9 }), edge: mk({ roughness: .9 }), wood: mk({ roughness: .55 }), metal: mk({ roughness: .35, metalness: .5 }) };
+    this.mats.shadowOnly = new T.MeshBasicMaterial({ colorWrite: false, depthWrite: false });
     this.gmats = { body: new T.MeshStandardMaterial({ transparent: true, opacity: .26, depthWrite: false, roughness: .6 }) };
     this.hemi = new T.HemisphereLight(0xffffff, 0x8899bb, .62); sc.add(this.hemi);
     const sun = this.sun = new T.DirectionalLight(0xffffff, .95);
@@ -792,7 +801,7 @@
     const up = Math.abs(dir.y) > .985 ? _b.set(0, 0, -1) : _b.set(0, 1, 0);
     const right = _c.crossVectors(up, dir).normalize(), u2 = _d.crossVectors(dir, right).normalize();
     mt = mt || 0; mb = mb || 0;
-    const vf = Math.tan(cam.fov * D2R / 2), hf = vf * aspect, vfe = vf * Math.max(.3, (h - mt - mb) / h), b = this.box, c = this.center;
+    const vf = Math.tan(cam.fov * D2R / 2), hf = vf * aspect, vfe = vf * Math.max(.3, (h - mt - mb) / h), b = this.box, c = this.focus || this.center;
     let need = 0;
     for (let k = 0; k < 8; k++) {
       const p = V(k & 1 ? b.max.x : b.min.x, k & 2 ? b.max.y : b.min.y, k & 4 ? b.max.z : b.min.z).sub(c);
@@ -809,6 +818,7 @@
     let daz = ((this.view.az - this.cur.az + 540) % 360) - 180;
     this.cur.az += daz * k; this.cur.el += (this.view.el - this.cur.el) * k; this.cur.zoom += (this.view.zoom - this.cur.zoom) * k;
     solve(P, this.S); this.man.update(this.S);
+    if (this.onPose) this.onPose(this.S, P);
     if (PG) { solve(PG, this.SG); this.ghost.update(this.SG); }
     this.ghost.root.visible = !!PG;
     this.guides.begin(); if (guideFn) guideFn(this.S, this.guides, this.colors); this.guides.end();
@@ -831,6 +841,11 @@
       });
       r.setScissorTest(false);
     }
+  };
+  // 카메라가 목표 위치에 도달했는지(멈춤 상태에서 다시 그릴 필요가 있는지 판단)
+  Stage.prototype.settled = function () {
+    const v = this.view, c = this.cur;
+    return Math.abs(((v.az - c.az + 540) % 360) - 180) < .01 && Math.abs(v.el - c.el) < .01 && Math.abs(v.zoom - c.zoom) < 1e-4 && !this._dirty;
   };
   Stage.prototype.project = function (p) {
     const v = _a.copy(p).project(this.cams[0]);

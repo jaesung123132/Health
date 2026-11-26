@@ -78,7 +78,7 @@
         { t: 3.4, p: { lean: .02, drop: 0, prot: .55 }, label: '맨 위에서 견갑 밀어내기' },
         { t: 4.0, p: { prot: .4 } }
       ], tail: .3,
-      mistake: { p: { lum: -14, hip: -14, flare: 80 }, at: { 1: { drop: .33 }, 2: { drop: .33 } }, seg: ['hips', 'elbow'], text: '엉덩이·허리가 처지고 팔꿈치가 옆으로 벌어진 자세' },
+      mistake: { p: { lum: -14, hip: -14, flare: 80 }, at: { 1: { drop: .3 }, 2: { drop: .3 } }, seg: ['hips', 'elbow'], text: '엉덩이·허리가 처지고 팔꿈치가 옆으로 벌어진 자세' },
       guides: [G.bodyLine, G.elbow]
     },
     {
@@ -165,10 +165,10 @@
       errors: ['팔꿈치가 굽음', '견갑이 모이며 가슴이 바닥으로 꺼짐', '엉덩이가 들림'],
       muscles: { names: '전면 삼각근, 전거근, 이두근(직선팔 부하), 복근, 손목', keys: ['delt', 'serr', 'bi', 'core', 'fore'] },
       easier: { text: '어깨를 5cm만 앞으로, 무릎 대고 린' }, harder: { text: '어깨를 더 앞으로', ex: ['pppu', 'tuck'] },
-      base: { hw: .2, fing: 75, flare: 15, neck: -10, footRef: 0 },
+      base: { hw: .2, fing: 75, flare: 15, neck: -10, footRef: -26 },
       keys: [
         { t: 0, p: { lean: .02, prot: .6, elev: -.3, lum: 2, tho: 6 }, label: '어깨를 손보다 앞으로 천천히' },
-        { t: 1.8, p: { lean: .17, prot: 1, elev: -.7, lum: 7, tho: 13 }, label: '홀드: 팔 잠금, 견갑 전인, 골반 말기' },
+        { t: 1.8, p: { lean: .15, prot: 1, elev: -.7, lum: 7, tho: 13 }, label: '홀드: 팔 잠금, 견갑 전인, 골반 말기' },
         { t: 5.2, p: {}, label: '천천히 돌아오기' },
         { t: 6.6, p: { lean: .02, prot: .6, elev: -.3, lum: 2, tho: 6 } }
       ], tail: .6,
@@ -240,15 +240,15 @@
       errors: ['내려가며 기울기를 잃고 어깨가 손 뒤로 빠짐', '팔꿈치가 옆으로 벌어짐', '엉덩이가 먼저 내려감'],
       muscles: { names: '전면 삼각근, 대흉근, 이두근, 전거근', keys: ['delt', 'chest', 'bi', 'serr'] },
       easier: { text: '기울기 줄이기(어깨를 손보다 5–10cm 앞), 무릎 대고 하기' }, harder: { text: '기울기 늘리기, 턱 플란체 푸시업' },
-      base: { hw: .2, fing: 115, flare: 12, neck: -10, footRef: 0 },
+      base: { hw: .2, fing: 115, flare: 12, neck: -10, footRef: -18 },
       keys: [
-        { t: 0, p: { lean: .21, drop: 0, prot: 1, elev: -.5, lum: 6, tho: 12 }, label: '2초 동안 내려가기, 기울기 유지' },
-        { t: 2.0, p: { lean: .25, drop: .3, prot: -.1, elev: -.2, lum: 4, tho: 4 }, label: '어깨는 계속 손보다 앞' },
+        { t: 0, p: { lean: .18, drop: 0, prot: 1, elev: -.5, lum: 6, tho: 12 }, label: '2초 동안 내려가기, 기울기 유지' },
+        { t: 2.0, p: { lean: .22, drop: .28, prot: -.1, elev: -.2, lum: 4, tho: 4 }, label: '어깨는 계속 손보다 앞' },
         { t: 2.3, p: {}, label: '밀어 올리기' },
-        { t: 3.4, p: { lean: .21, drop: 0, prot: 1, elev: -.5, lum: 6, tho: 12 }, label: '맨 위에서 견갑 전인' },
+        { t: 3.4, p: { lean: .18, drop: 0, prot: 1, elev: -.5, lum: 6, tho: 12 }, label: '맨 위에서 견갑 전인' },
         { t: 4.2, p: {} }
       ], tail: .2,
-      mistake: { at: { 1: { lean: .08, drop: .2, flare: 70 }, 2: { lean: .08, drop: .2, flare: 70 } }, seg: ['shoulder', 'elbow'], text: '어깨가 손 뒤로 빠지고 팔꿈치가 벌어진 자세' },
+      mistake: { at: { 1: { lean: .12, drop: .17, flare: 70 }, 2: { lean: .12, drop: .17, flare: 70 } }, seg: ['shoulder', 'elbow'], text: '어깨가 손 뒤로 빠지고 팔꿈치가 벌어진 자세' },
       guides: [G.wristV, G.lean, G.bodyLine]
     },
     {
@@ -263,7 +263,7 @@
       keys: [
         { t: 0, p: { g: 1, gLean: .05, pitch: 55, lum: 18, tho: 20, prot: .6, elev: -.4, hipF: 118, knee: 130 }, label: '쪼그려 손 짚기, 팔은 곧게' },
         { t: 1.2, p: {}, label: '어깨를 앞으로 보내며 발 띄우기' },
-        { t: 2.6, p: { g: 0, pitch: 74, lum: 16, tho: 24, prot: 1, elev: -.7, hipF: 128, knee: 145 }, label: '홀드: 엉덩이를 어깨 높이로, 등 둥글게' },
+        { t: 2.6, p: { g: 0, pitch: 70, lum: 16, tho: 24, prot: 1, elev: -.7, hipF: 128, knee: 145 }, label: '홀드: 엉덩이를 어깨 높이로, 등 둥글게' },
         { t: 6.0, p: {}, label: '발 내리기' },
         { t: 7.2, p: { g: 1, gLean: .05, pitch: 55, lum: 18, tho: 20, prot: .6, elev: -.4, hipF: 118, knee: 130 } }
       ], tail: .6,
@@ -280,11 +280,11 @@
       easier: { text: '등을 반만 편 하프 턱', ex: ['tuck'] }, harder: { text: '한 다리 펴기', ex: ['straddle'] },
       base: { hw: .2, fing: 100, flare: 15, neck: -8, plantar: 50, abd: 6, comOff: .03, prot: 1, elev: -.7 },
       keys: [
-        { t: 0, p: { pitch: 74, lum: 16, tho: 24, hipF: 128, knee: 145 }, label: '턱 플란체에서 시작' },
+        { t: 0, p: { pitch: 70, lum: 16, tho: 24, hipF: 128, knee: 145 }, label: '턱 플란체에서 시작' },
         { t: 1.0, p: {}, label: '등을 펴며 엉덩이 열기' },
         { t: 2.6, p: { pitch: 86, lum: 2, tho: 6, hipF: 80, knee: 105 }, label: '홀드: 등 수평, 허벅지와 몸통 약 90°' },
         { t: 6.0, p: {}, label: '다시 턱으로' },
-        { t: 7.4, p: { pitch: 74, lum: 16, tho: 24, hipF: 128, knee: 145 } }
+        { t: 7.4, p: { pitch: 70, lum: 16, tho: 24, hipF: 128, knee: 145 } }
       ], tail: .6,
       mistake: { at: { 2: { pitch: 100, tho: 20, lum: 12, bent: .05 }, 3: { pitch: 100, tho: 20, lum: 12, bent: .05 } }, seg: ['back', 'elbow'], text: '등이 다시 말리고 엉덩이가 높아진 자세' },
       guides: [G.com, ['level', 'shM', 'hipM', { k: [2] }], ['angle', 'shM', 'hipM', 'knM', '고관절', { k: [1, 2] }]]
@@ -298,13 +298,13 @@
       muscles: { names: '전면 삼각근, 전거근, 이두근, 둔근, 허리', keys: ['delt', 'serr', 'bi', 'glute', 'core'] },
       easier: { text: '저항 밴드를 골반에 걸어 보조, 한 다리 플란체', ex: ['advtuck'] }, harder: { text: '다리 간격 좁히기', ex: ['full'] },
       base: { hw: .2, fing: 100, flare: 15, neck: -8, abd: 40, prot: 1, elev: -.7 },
-      baseBy: { prone: { footRef: 10 }, planche: { plantar: 50, comOff: .03 } },
+      baseBy: { prone: { footRef: -18 }, planche: { plantar: 50, comOff: .03 } },
       keys: [
-        { t: 0, b: 'prone', p: { lean: .18, lum: 4, tho: 10 }, label: '다리를 벌린 플란체 린' },
-        { t: 1.4, b: 'prone', p: { lean: .3 }, label: '어깨를 더 앞으로, 발에 실린 체중이 빠짐' },
+        { t: 0, b: 'prone', p: { lean: .15, lum: 4, tho: 10 }, label: '다리를 벌린 플란체 린' },
+        { t: 1.4, b: 'prone', p: { lean: .25 }, label: '어깨를 더 앞으로, 발에 실린 체중이 빠짐' },
         { t: 2.6, b: 'planche', p: { pitch: 84, lum: 4, tho: 8, hipF: 0, knee: 0 }, label: '홀드: 다리 펴고 몸 수평' },
         { t: 5.8, p: {}, label: '발끝 내리기' },
-        { t: 7.0, b: 'prone', p: { lean: .18 } }
+        { t: 7.0, b: 'prone', p: { lean: .15 } }
       ], tail: .6,
       mistake: { byB: { planche: { hipF: 28, pitch: 94, lum: 10 } }, seg: ['hips', 'legs'], text: '엉덩이가 굽어 다리가 처진 자세' },
       guides: [G.com, ['level', 'shM', 'hipM', { k: [2] }], ['angle', 'wrR', 'shR', 'hipM', '팔–몸통', { k: [2] }]]
@@ -318,13 +318,13 @@
       muscles: { names: '전면 삼각근, 전거근, 이두근, 둔근, 코어 전체', keys: ['delt', 'serr', 'bi', 'glute', 'core', 'quad'] },
       easier: { text: '하프 레이(무릎만 굽힌 풀), 밴드 보조', ex: ['straddle'] }, harder: { text: '풀 플란체 푸시업, 홀드 시간 늘리기' },
       base: { hw: .2, fing: 100, flare: 15, neck: -8, abd: 0, prot: 1, elev: -.7 },
-      baseBy: { prone: { footRef: 10 }, planche: { plantar: 55, comOff: .03 } },
+      baseBy: { prone: { footRef: -18 }, planche: { plantar: 55, comOff: .03 } },
       keys: [
-        { t: 0, b: 'prone', p: { lean: .22, lum: 4, tho: 10 }, label: '깊은 플란체 린' },
-        { t: 1.4, b: 'prone', p: { lean: .32 }, label: '어깨를 최대한 앞으로' },
+        { t: 0, b: 'prone', p: { lean: .18, lum: 4, tho: 10 }, label: '깊은 플란체 린' },
+        { t: 1.4, b: 'prone', p: { lean: .27 }, label: '어깨를 최대한 앞으로' },
         { t: 2.6, b: 'planche', p: { pitch: 86, lum: 3, tho: 6, hipF: 0, knee: 0 }, label: '홀드: 머리부터 발끝까지 수평' },
         { t: 5.8, p: {}, label: '발끝 내리기' },
-        { t: 7.0, b: 'prone', p: { lean: .22 } }
+        { t: 7.0, b: 'prone', p: { lean: .18 } }
       ], tail: .6,
       mistake: { byB: { planche: { lum: -14, hipF: -12, pitch: 80, bent: .03 } }, seg: ['back', 'hips'], text: '허리가 꺾인 바나나 자세' },
       guides: [G.com, ['line', 'shM', 'anM', 'ok', '수평 일직선', { k: [2] }], ['angle', 'wrR', 'shR', 'hipM', '팔–몸통', { k: [2] }]]
@@ -465,8 +465,86 @@
     ['Calisteniapp: In-depth analysis of the planche', 'https://calisteniapp.com/articles/in-depth-analysis-planche', '골반 후방경사와 견갑 전인에 대한 코치들 간 관점 차이'],
     ['Liftosaur: Pseudo planche push-up', 'https://www.liftosaur.com/exercises/bodyweight-pseudo-planche-pushup', 'PPPU 손 위치(손가락 바깥 약 45°)와 기울기 유지'],
     ['Equinox: Planche progression', 'https://equinox.com/articles/2020/03/planche-progression-workout', '플란체는 보통 수년이 걸린다는 설명'],
-    ['Stronger by Science: 이두 힘줄 통증', 'https://www.strongerbyscience.com/biceps-tendinopathy/', '이두 힘줄 과부하 기전과 관리']
+    ['Stronger by Science: 이두 힘줄 통증', 'https://www.strongerbyscience.com/biceps-tendinopathy/', '이두 힘줄 과부하 기전과 관리'],
+    ['BodyParts3D (© DBCLS, CC BY-SA 2.1 JP)', 'https://lifesciencedb.jp/bp3d/', '해부 모드의 근육·뼈 모델 원본(MRI 기반)'],
+    ['Z-Anatomy (Gauthier Kervyn, CC BY-SA 4.0)', 'https://www.z-anatomy.com/', '넓은등근·배곧은근 등 일부 근육 모델 원본'],
+    ['BodyExplorer (JohanBellander)', 'https://github.com/JohanBellander/BodyExplorer', '두 데이터를 맞춰 정리한 메시. 이 앱에서 다시 간소화·압축해 관절에 연결']
   ];
 
-  window.PL_DATA = { phases, exercises, routine, weeks, tests, gates, principles, safety, sources };
+  /* ---------- 해부 모드: 근육 묶음, 운동별 추정 활성도, 근육 설명 ----------
+     활성도는 근전도(EMG) 연구와 역학(어떤 관절을 어느 방향으로 버티는지)에 근거한 추정치입니다. 0~1. */
+  const MG = {
+    delt_a: ['clavicular part of deltoid'], delt_m: ['acromial part of deltoid'], delt_p: ['spinal part of deltoid'],
+    pec_c: ['clavicular part of pectoralis major'], pec_s: ['sternocostal part of pectoralis major'], pec_a: ['abdominal part of pectoralis major'],
+    pec_min: ['pectoralis minor'], serr: ['serratus anterior'],
+    trap_u: ['descending part of trapezius'], trap_m: ['transverse part of trapezius'], trap_l: ['ascending part of trapezius'],
+    rhom: ['rhomboid major', 'rhomboid minor'], lev_scap: ['levator scapulae'],
+    lat: ['latissimus dorsi'], teres_maj: ['teres major'], cuff: ['supraspinatus', 'infraspinatus muscle', 'teres minor', 'subscapularis'],
+    bi: ['long head of biceps brachii', 'short head of biceps brachii'], brach: ['brachialis'], cbr: ['coracobrachialis'],
+    tri: ['long head of triceps brachii', 'lateral head of triceps brachii', 'medial head of triceps brachii', 'anconeus'],
+    brad: ['brachioradialis'], pron: ['humeral head of pronator teres', 'ulnar head of pronator teres'],
+    wflex: ['flexor carpi radialis', 'humeral head of flexor carpi ulnaris', 'ulnar head of flexor carpi ulnaris', 'palmaris longus', 'flexor digitorum superficialis', 'flexor digitorum profundus', 'flexor pollicis longus'],
+    wext: ['extensor carpi radialis longus', 'extensor carpi radialis brevis', 'extensor digitorum', 'extensor digiti minimi', 'extensor carpi ulnaris'],
+    hand_i: ['abductor pollicis brevis', 'opponens pollicis', 'flexor pollicis brevis', 'superficial head of flexor pollicis brevis', 'oblique head of adductor pollicis', 'transverse head of adductor pollicis', 'abductor digiti minimi of hand', 'flexor digiti minimi brevis of hand', 'opponens digiti minimi of hand', 'set of dorsal interossei of hand', 'set of palmar interossei of hand', 'set of lumbricals of hand'],
+    rect_abd: ['rectus abdominis'], obl: ['external oblique'], erector: ['iliocostalis lumborum', 'iliocostalis thoracis', 'longissimus thoracis', 'spinalis thoracis'],
+    glute_max: ['gluteus maximus'], glute_med: ['gluteus medius', 'gluteus minimus'], tfl: ['tensor fasciae latae'], iliop: ['iliacus', 'psoas major'],
+    rf: ['rectus femoris'], vasti: ['vastus lateralis', 'vastus medialis', 'vastus intermedius'], sart: ['sartorius'],
+    add: ['adductor longus', 'adductor brevis', 'adductor magnus', 'adductor minimus', 'gracilis', 'pectineus'],
+    ham: ['long head of biceps femoris', 'short head of biceps femoris', 'semitendinosus', 'semimembranosus'],
+    calf: ['medial head of gastrocnemius', 'lateral head of gastrocnemius', 'soleus'], neck: ['sternocleidomastoid']
+  };
+  const ACT = {
+    wrist: { act: { wflex: .45, wext: .45, pron: .3, hand_i: .3, delt_a: .2, serr: .2, tri: .2 }, effK: null },
+    pushup: { act: { pec_s: .9, pec_c: .7, pec_a: .6, tri: .8, delt_a: .7, serr: .6, cbr: .4, bi: .15, rect_abd: .45, obl: .35, glute_max: .25, rf: .2, vasti: .2, wflex: .3 }, effK: [.55, 1, 1, .6, .55] },
+    scap: { act: { serr: .95, pec_min: .5, trap_m: .5, trap_l: .5, rhom: .55, rect_abd: .35, obl: .3, tri: .3, delt_a: .3, pec_s: .25 }, effK: [.6, .8, .8, 1, 1, .6] },
+    hollow: { act: { rect_abd: .95, obl: .75, iliop: .75, rf: .6, tfl: .4, sart: .35, vasti: .35, delt_a: .25, lat: .2, serr: .3, neck: .45 }, effK: [.1, .4, 1, 1, .1] },
+    dips: { act: { tri: .95, pec_s: .7, pec_a: .85, pec_c: .45, delt_a: .65, cbr: .4, lat: .35, trap_l: .45, rhom: .3, pec_min: .4, rect_abd: .3, wflex: .35 }, effK: [.55, 1, 1, .6, .55] },
+    row: { act: { lat: .85, rhom: .8, trap_m: .8, trap_l: .5, delt_p: .7, bi: .7, brach: .7, brad: .6, cuff: .5, teres_maj: .6, erector: .4, glute_max: .5, ham: .45, rect_abd: .3, wflex: .45 }, effK: [.6, 1, 1, .6] },
+    lean: { act: { delt_a: .95, serr: .8, pec_c: .6, pec_s: .4, bi: .6, cbr: .6, tri: .45, wflex: .65, wext: .3, hand_i: .35, trap_l: .5, lat: .3, rect_abd: .65, obl: .5, glute_max: .55, rf: .3, vasti: .35, pec_min: .35 }, effK: [.35, 1, 1, .35] },
+    frog: { act: { delt_a: .8, tri: .7, pec_s: .5, pec_c: .5, serr: .6, wflex: .85, wext: .45, hand_i: .45, rect_abd: .5, obl: .45, add: .6, iliop: .5, cbr: .4 }, effK: [.3, .6, 1, 1, .3] },
+    pike: { act: { delt_a: .95, delt_m: .6, tri: .85, trap_u: .6, serr: .65, pec_c: .5, cuff: .35, rect_abd: .3, wflex: .4, lev_scap: .3 }, effK: [.6, 1, 1, .65, .6] },
+    lsit: { act: { rect_abd: .85, iliop: .9, rf: .85, vasti: .6, tfl: .5, sart: .4, tri: .6, lat: .6, trap_l: .6, pec_a: .5, pec_min: .4, delt_a: .35, wflex: .55, obl: .6, add: .3 }, effK: [.25, .6, 1, 1, .25] },
+    pppu: { act: { delt_a: .95, pec_s: .7, pec_c: .75, pec_a: .5, tri: .7, bi: .6, serr: .75, cbr: .6, wflex: .7, hand_i: .35, rect_abd: .6, obl: .45, glute_max: .5, rf: .25 }, effK: [.7, 1, 1, .75, .7] },
+    tuck: { act: { delt_a: 1, serr: .85, pec_c: .7, pec_s: .5, bi: .7, cbr: .65, tri: .5, wflex: .8, wext: .35, hand_i: .45, trap_l: .6, lat: .4, pec_min: .5, rect_abd: .75, obl: .55, iliop: .7, rf: .4 }, effK: [.3, .6, 1, 1, .3] },
+    advtuck: { act: { delt_a: 1, serr: .85, pec_c: .7, pec_s: .5, bi: .75, cbr: .65, tri: .5, wflex: .85, wext: .35, hand_i: .45, trap_l: .6, lat: .45, pec_min: .5, rect_abd: .65, obl: .55, glute_max: .6, erector: .5, ham: .3, iliop: .4 }, effK: [.85, .9, 1, 1, .85] },
+    straddle: { act: { delt_a: 1, serr: .9, pec_c: .8, pec_s: .6, bi: .8, cbr: .7, tri: .5, wflex: .9, wext: .4, hand_i: .5, trap_l: .6, lat: .5, pec_min: .55, rect_abd: .7, obl: .6, glute_max: .8, glute_med: .7, ham: .6, erector: .6, vasti: .5, tfl: .5, add: .3 }, effK: [.6, .8, 1, 1, .6] },
+    full: { act: { delt_a: 1, serr: .95, pec_c: .85, pec_s: .65, bi: .85, cbr: .7, tri: .55, wflex: .95, wext: .4, hand_i: .5, trap_l: .65, lat: .5, pec_min: .55, rect_abd: .8, obl: .7, glute_max: .9, ham: .7, erector: .7, vasti: .6, add: .55, calf: .3 }, effK: [.6, .8, 1, 1, .6] }
+  };
+  exercises.forEach(e => { const a = ACT[e.id]; if (a) { e.act = a.act; e.effK = a.effK; } });
+  // 근육 하는 일 (탭했을 때 표시)
+  const MINFO = {
+    delt_a: '팔을 앞으로 들어 올립니다(어깨 굴곡). 플란체·린·파이크에서 몸무게를 가장 많이 버티는 근육입니다.',
+    delt_m: '팔을 옆으로 들어 올립니다(외전).', delt_p: '팔을 뒤로 당깁니다(신전·수평 외전). 로우에서 일합니다.',
+    pec_c: '팔을 앞·위로 모읍니다. 플란체에서 어깨 앞쪽을 함께 받칩니다.', pec_s: '팔을 몸 앞으로 모으고 밀어냅니다. 푸시업의 주동근입니다.',
+    pec_a: '팔을 아래로 끌어내립니다. 딥스와 L-싯에서 버팁니다.', pec_min: '어깨뼈를 앞·아래로 당깁니다.',
+    serr: '어깨뼈를 갈비뼈를 따라 앞으로 밀어냅니다(전인). 플란체에서 "바닥을 밀어 등을 둥글게"가 이 근육입니다.',
+    trap_u: '어깨뼈를 들어 올립니다(으쓱). 파이크 푸시업 맨 위에서 일합니다.', trap_m: '어깨뼈를 척추 쪽으로 모읍니다(후인).',
+    trap_l: '어깨뼈를 끌어내립니다(하강). "어깨를 귀에서 멀리"가 이 근육입니다.', rhom: '어깨뼈를 척추 쪽으로 모읍니다.',
+    lev_scap: '어깨뼈를 들어 올립니다.', lat: '팔을 아래·뒤로 당기고 어깨를 내립니다. 로우와 L-싯에서 일합니다.',
+    teres_maj: '팔을 뒤로 당기고 안쪽으로 돌립니다.', cuff: '회전근개. 어깨 관절이 빠지지 않게 붙잡고 돌립니다.',
+    bi: '팔꿈치를 굽힙니다. 팔을 편 채 버티는 플란체에서는 늘어난 상태로 큰 부하를 받습니다(직선팔 부하).',
+    brach: '팔꿈치를 굽힙니다.', cbr: '팔을 앞·안쪽으로 듭니다. 플란체에서 전면 삼각근을 돕습니다.',
+    tri: '팔꿈치를 폅니다. 푸시업·딥스에서 밀고, 플란체에서는 팔꿈치를 잠급니다.', brad: '팔꿈치를 굽힙니다(손이 중립일 때).',
+    pron: '아래팔을 엎칩니다(손바닥이 아래로).', wflex: '손목·손가락을 굽힙니다. 손바닥과 손가락으로 바닥을 눌러 앞으로 넘어지지 않게 잡습니다.',
+    wext: '손목을 폅니다. 손목을 단단히 고정합니다.', hand_i: '손가락을 벌리고 바닥을 움켜쥡니다.',
+    rect_abd: '몸통을 굽히고 골반을 말아 올립니다(후방경사). 허리가 꺾이지 않게 합니다.', obl: '몸통을 굽히고 비틀며 복압을 만듭니다.',
+    erector: '척추를 펴서 등을 평평하게 유지합니다.', glute_max: '엉덩이를 펴고 골반을 고정합니다. 플란체에서 다리를 수평으로 받칩니다.',
+    glute_med: '다리를 옆으로 벌리고 골반을 안정시킵니다. 스트래들에서 일합니다.', tfl: '엉덩이를 굽히고 벌립니다.',
+    iliop: '엉덩이를 굽혀 다리를 들어 올립니다. L-싯과 할로우 바디의 핵심입니다.', rf: '무릎을 펴고 엉덩이를 굽힙니다.',
+    vasti: '무릎을 폅니다(잠급니다).', sart: '엉덩이와 무릎을 굽힙니다.', add: '다리를 모읍니다. 프로그 스탠드에서 무릎으로 팔을 조입니다.',
+    ham: '무릎을 굽히고 엉덩이를 폅니다. 파이크 자세에서는 늘어납니다.', calf: '발목을 폅니다(발끝 세우기).', neck: '목을 굽히고 돌립니다.'
+  };
+
+  // 묶음 이름 (지금 일하는 근육 목록용)
+  const MGKO = {
+    delt_a: '삼각근 전면', delt_m: '삼각근 측면', delt_p: '삼각근 후면', pec_c: '대흉근 윗부분', pec_s: '대흉근 가운데', pec_a: '대흉근 아랫부분',
+    pec_min: '작은가슴근', serr: '앞톱니근(전거근)', trap_u: '승모근 상부', trap_m: '승모근 중부', trap_l: '승모근 하부', rhom: '마름근(능형근)',
+    lev_scap: '어깨올림근', lat: '넓은등근(광배근)', teres_maj: '큰원근', cuff: '회전근개', bi: '위팔두갈래근(이두)', brach: '위팔근', cbr: '부리위팔근',
+    tri: '위팔세갈래근(삼두)', brad: '위팔노근', pron: '원엎침근', wflex: '손목·손가락 굽힘근', wext: '손목 폄근', hand_i: '손 안쪽 근육',
+    rect_abd: '배곧은근(복직근)', obl: '배바깥빗근', erector: '척추세움근', glute_max: '큰볼기근(대둔근)', glute_med: '중간·작은볼기근',
+    tfl: '넙다리근막긴장근', iliop: '엉덩허리근(장요근)', rf: '넙다리곧은근', vasti: '넓은근(대퇴사두)', sart: '넙다리빗근', add: '모음근(내전근)',
+    ham: '햄스트링', calf: '종아리(비복·가자미근)', neck: '흉쇄유돌근'
+  };
+
+  window.PL_DATA = { phases, exercises, routine, weeks, tests, gates, principles, safety, sources, MG, MINFO, MGKO };
 })();

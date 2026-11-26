@@ -1,0 +1,166 @@
+# 해부 모델에서 쓸 구조물 목록
+# 근육: 영어 기본 이름 -> (한국어 이름, 부위, 따라 움직이는 뼈대, 종류)
+#   뼈대 기호: P 골반, L 허리, T 가슴우리, N 목, H 머리, C 빗장뼈, S 어깨뼈, U 위팔, F 아래팔(F/W로 비틀림 분배),
+#             A 손, G 손가락, Th 넙다리, K 정강이, D 발   (C~D는 좌우별)
+#   종류: m 근육, t 힘줄·근막(부풀지 않음), f 얇은 판 모양 근육(덜 부풂)
+MUSCLES = {
+    # 목
+    'sternocleidomastoid': ('흉쇄유돌근', '목', 'T C N H', 'm'),
+    'splenius capitis': ('머리널판근', '목', 'T N H', 'f'),
+    'splenius cervicis': ('목널판근', '목', 'T N', 'f'),
+    'semispinalis capitis': ('머리반가시근', '목', 'T N H', 'm'),
+    'scalenus anterior': ('앞목갈비근', '목', 'N T', 'm'),
+    'scalenus medius': ('중간목갈비근', '목', 'N T', 'm'),
+    'scalenus posterior': ('뒤목갈비근', '목', 'N T', 'm'),
+    'levator scapulae': ('어깨올림근(견갑거근)', '어깨', 'N S', 'm'),
+    # 승모근·능형근·회전근개
+    'descending part of trapezius': ('승모근 상부', '등', 'H N T C S', 'f'),
+    'transverse part of trapezius': ('승모근 중부', '등', 'T S', 'f'),
+    'ascending part of trapezius': ('승모근 하부', '등', 'T S', 'f'),
+    'rhomboid major': ('큰마름근(대능형근)', '등', 'T S', 'f'),
+    'rhomboid minor': ('작은마름근(소능형근)', '등', 'T N S', 'f'),
+    'clavicular part of deltoid': ('삼각근 전면', '어깨', 'C U', 'm'),
+    'acromial part of deltoid': ('삼각근 측면', '어깨', 'S C U', 'm'),
+    'spinal part of deltoid': ('삼각근 후면', '어깨', 'S U', 'm'),
+    'supraspinatus': ('가시위근(극상근)', '어깨', 'S U', 'm'),
+    'infraspinatus muscle': ('가시아래근(극하근)', '어깨', 'S U', 'm'),
+    'teres minor': ('작은원근(소원근)', '어깨', 'S U', 'm'),
+    'teres major': ('큰원근(대원근)', '어깨', 'S U', 'm'),
+    'subscapularis': ('어깨밑근(견갑하근)', '어깨', 'S U', 'm'),
+    # 가슴
+    'clavicular part of pectoralis major': ('대흉근 윗부분(쇄골부)', '가슴', 'C T U', 'm'),
+    'sternocostal part of pectoralis major': ('대흉근 가운데(흉늑부)', '가슴', 'T U', 'm'),
+    'abdominal part of pectoralis major': ('대흉근 아랫부분(복부)', '가슴', 'T U', 'm'),
+    'pectoralis minor': ('작은가슴근(소흉근)', '가슴', 'T S', 'm'),
+    'subclavius': ('빗장밑근', '가슴', 'T C', 'm'),
+    'serratus anterior': ('앞톱니근(전거근)', '가슴', 'T S', 'f'),
+    # 등
+    'latissimus dorsi': ('넓은등근(광배근)', '등', 'P L T S U', 'f'),
+    'iliocostalis lumborum': ('허리엉덩갈비근(척추세움근)', '등', 'P L T', 'm'),
+    'iliocostalis thoracis': ('등엉덩갈비근(척추세움근)', '등', 'L T', 'm'),
+    'longissimus thoracis': ('등가장긴근(척추세움근)', '등', 'P L T', 'm'),
+    'spinalis thoracis': ('등가시근(척추세움근)', '등', 'L T', 'm'),
+    'posterior layer of thoracolumbar fascia': ('등허리근막', '등', 'P L T', 't'),
+    # 복부
+    'rectus abdominis': ('배곧은근(복직근)', '복부', 'P L T', 'm'),
+    'external oblique': ('배바깥빗근(외복사근)', '복부', 'P L T', 'f'),
+    # 위팔
+    'long head of biceps brachii': ('위팔두갈래근 장두(이두)', '위팔', 'S U F', 'm'),
+    'short head of biceps brachii': ('위팔두갈래근 단두(이두)', '위팔', 'S U F', 'm'),
+    'brachialis': ('위팔근(상완근)', '위팔', 'U F', 'm'),
+    'coracobrachialis': ('부리위팔근(오훼완근)', '위팔', 'S U', 'm'),
+    'long head of triceps brachii': ('위팔세갈래근 장두(삼두)', '위팔', 'S U F', 'm'),
+    'lateral head of triceps brachii': ('위팔세갈래근 외측두(삼두)', '위팔', 'U F', 'm'),
+    'medial head of triceps brachii': ('위팔세갈래근 내측두(삼두)', '위팔', 'U F', 'm'),
+    'anconeus': ('팔꿈치근', '아래팔', 'U F', 'm'),
+    # 아래팔
+    'brachioradialis': ('위팔노근(완요골근)', '아래팔', 'U F', 'm'),
+    'humeral head of pronator teres': ('원엎침근', '아래팔', 'U F', 'm'),
+    'ulnar head of pronator teres': ('원엎침근', '아래팔', 'U F', 'm'),
+    'supinator': ('손뒤침근(회외근)', '아래팔', 'U F', 'm'),
+    'flexor carpi radialis': ('노쪽손목굽힘근', '아래팔', 'U F A', 'm'),
+    'humeral head of flexor carpi ulnaris': ('자쪽손목굽힘근', '아래팔', 'U F A', 'm'),
+    'ulnar head of flexor carpi ulnaris': ('자쪽손목굽힘근', '아래팔', 'U F A', 'm'),
+    'palmaris longus': ('긴손바닥근', '아래팔', 'U F A', 'm'),
+    'flexor digitorum superficialis': ('얕은손가락굽힘근', '아래팔', 'U F A G', 'm'),
+    'flexor digitorum profundus': ('깊은손가락굽힘근', '아래팔', 'F A G', 'm'),
+    'flexor pollicis longus': ('긴엄지굽힘근', '아래팔', 'F A', 'm'),
+    'extensor carpi radialis longus': ('긴노쪽손목폄근', '아래팔', 'U F A', 'm'),
+    'extensor carpi radialis brevis': ('짧은노쪽손목폄근', '아래팔', 'U F A', 'm'),
+    'extensor digitorum': ('손가락폄근', '아래팔', 'U F A G', 'm'),
+    'extensor digiti minimi': ('새끼폄근', '아래팔', 'U F A G', 'm'),
+    'extensor carpi ulnaris': ('자쪽손목폄근', '아래팔', 'U F A', 'm'),
+    'abductor pollicis longus': ('긴엄지벌림근', '아래팔', 'F A', 'm'),
+    'extensor pollicis brevis': ('짧은엄지폄근', '아래팔', 'F A', 'm'),
+    'extensor pollicis longus': ('긴엄지폄근', '아래팔', 'F A', 'm'),
+    # 손
+    'abductor pollicis brevis': ('짧은엄지벌림근', '손', 'A', 'm'),
+    'opponens pollicis': ('엄지맞섬근', '손', 'A', 'm'),
+    'flexor pollicis brevis': ('짧은엄지굽힘근', '손', 'A', 'm'),
+    'superficial head of flexor pollicis brevis': ('짧은엄지굽힘근', '손', 'A', 'm'),
+    'oblique head of adductor pollicis': ('엄지모음근', '손', 'A', 'm'),
+    'transverse head of adductor pollicis': ('엄지모음근', '손', 'A', 'm'),
+    'abductor digiti minimi of hand': ('새끼벌림근', '손', 'A G', 'm'),
+    'flexor digiti minimi brevis of hand': ('짧은새끼굽힘근', '손', 'A G', 'm'),
+    'opponens digiti minimi of hand': ('새끼맞섬근', '손', 'A', 'm'),
+    'set of dorsal interossei of hand': ('등쪽뼈사이근', '손', 'A G', 'm'),
+    'set of palmar interossei of hand': ('바닥쪽뼈사이근', '손', 'A G', 'm'),
+    'set of lumbricals of hand': ('벌레근', '손', 'A G', 'm'),
+    # 엉덩이
+    'gluteus maximus': ('큰볼기근(대둔근)', '엉덩이', 'P Th', 'm'),
+    'gluteus medius': ('중간볼기근(중둔근)', '엉덩이', 'P Th', 'm'),
+    'gluteus minimus': ('작은볼기근(소둔근)', '엉덩이', 'P Th', 'm'),
+    'tensor fasciae latae': ('넙다리근막긴장근', '엉덩이', 'P Th', 'm'),
+    'iliacus': ('엉덩근(장골근)', '엉덩이', 'P Th', 'm'),
+    'psoas major': ('큰허리근(대요근)', '엉덩이', 'L P Th', 'm'),
+    'pectineus': ('두덩근(치골근)', '허벅지', 'P Th', 'm'),
+    # 허벅지
+    'rectus femoris': ('넙다리곧은근(대퇴직근)', '허벅지', 'P Th K', 'm'),
+    'vastus lateralis': ('가쪽넓은근(외측광근)', '허벅지', 'Th K', 'm'),
+    'vastus medialis': ('안쪽넓은근(내측광근)', '허벅지', 'Th K', 'm'),
+    'vastus intermedius': ('중간넓은근(중간광근)', '허벅지', 'Th K', 'm'),
+    'sartorius': ('넙다리빗근(봉공근)', '허벅지', 'P Th K', 'm'),
+    'gracilis': ('두덩정강근(박근)', '허벅지', 'P Th K', 'm'),
+    'adductor longus': ('긴모음근(장내전근)', '허벅지', 'P Th', 'm'),
+    'adductor brevis': ('짧은모음근(단내전근)', '허벅지', 'P Th', 'm'),
+    'adductor magnus': ('큰모음근(대내전근)', '허벅지', 'P Th', 'm'),
+    'adductor minimus': ('작은모음근', '허벅지', 'P Th', 'm'),
+    'long head of biceps femoris': ('넙다리두갈래근 장두(햄스트링)', '허벅지', 'P Th K', 'm'),
+    'short head of biceps femoris': ('넙다리두갈래근 단두(햄스트링)', '허벅지', 'Th K', 'm'),
+    'semitendinosus': ('반힘줄근(햄스트링)', '허벅지', 'P Th K', 'm'),
+    'semimembranosus': ('반막근(햄스트링)', '허벅지', 'P Th K', 'm'),
+    'iliotibial tract': ('엉덩정강띠(장경인대)', '허벅지', 'P Th K', 't'),
+    # 종아리
+    'medial head of gastrocnemius': ('장딴지근 안쪽갈래(비복근)', '종아리', 'Th K D', 'm'),
+    'lateral head of gastrocnemius': ('장딴지근 가쪽갈래(비복근)', '종아리', 'Th K D', 'm'),
+    'soleus': ('가자미근', '종아리', 'K D', 'm'),
+    'tibialis anterior': ('앞정강근(전경골근)', '종아리', 'K D', 'm'),
+    'extensor digitorum longus': ('긴발가락폄근', '종아리', 'K D', 'm'),
+    'extensor hallucis longus': ('긴엄지발가락폄근', '종아리', 'K D', 'm'),
+    'fibularis longus': ('긴종아리근', '종아리', 'K D', 'm'),
+    'fibularis brevis': ('짧은종아리근', '종아리', 'K D', 'm'),
+    'fibularis tertius': ('셋째종아리근', '종아리', 'K D', 'm'),
+    'calcaneal tendon': ('발꿈치힘줄(아킬레스건)', '종아리', 'K D', 't'),
+    # 발
+    'abductor hallucis': ('엄지벌림근(발)', '발', 'D', 'm'),
+    'flexor digitorum brevis': ('짧은발가락굽힘근', '발', 'D', 'm'),
+    'abductor digiti minimi of foot': ('새끼벌림근(발)', '발', 'D', 'm'),
+    'extensor hallucis brevis': ('짧은엄지폄근(발)', '발', 'D', 'm'),
+}
+
+# 뼈: 영어 기본 이름(정규식) -> (한국어, 뼈대 기호)
+BONES = [
+    (r'^(frontal|parietal|occipital|temporal|sphenoid|zygomatic|nasal) bone$|^maxilla$|^mandible$', '머리뼈', 'H'),
+    (r'^(atlas|axis)$|cervical vertebra$', '목뼈', 'N'),
+    (r'thoracic vertebra$', '등뼈', 'T'),
+    (r'^(first|second|third) lumbar vertebra$', '허리뼈', 'L'),
+    (r'^(fourth|fifth) lumbar vertebra$', '허리뼈', 'P'),
+    (r' rib$', '갈비뼈', 'T'),
+    (r'^(manubrium|body of sternum|xiphoid process)$', '복장뼈', 'T'),
+    (r'^clavicle$', '빗장뼈', 'C'),
+    (r'^scapula$', '어깨뼈', 'S'),
+    (r'^humerus$', '위팔뼈', 'U'),
+    (r'^ulna$', '자뼈', 'F'),
+    (r'^radius$', '노뼈', 'F'),
+    (r'^(scaphoid|lunate|trapezium|trapezoid|capitate|hamate|pisiform)$', '손목뼈', 'A'),
+    (r'metacarpal bone$', '손허리뼈', 'A'),
+    (r'phalanx of thumb$', '엄지뼈', 'A'),
+    (r'phalanx of (index|middle|ring|little) finger$', '손가락뼈', 'G'),
+    (r'^hip bone$', '볼기뼈', 'P'),
+    (r'^femur$', '넙다리뼈', 'Th'),
+    (r'^patella$', '무릎뼈', 'K'),
+    (r'^(tibia|fibula)$', '정강뼈·종아리뼈', 'K'),
+    (r'^(talus|calcaneus|navicular bone of foot|cuboid bone|(medial|intermediate|lateral) cuneiform bone)$', '발목뼈', 'D'),
+    (r'metatarsal bone$', '발허리뼈', 'D'),
+    (r'phalanx of (big|second|third|fourth|little) toe$', '발가락뼈', 'D'),
+]
+
+# 뼈대(스키닝 본) 순서. 좌우가 있는 기호는 L/R 두 개.
+CENTRAL = ['P', 'L', 'T', 'N', 'H']
+SIDED = ['C', 'S', 'U', 'F', 'W', 'A', 'G', 'Th', 'K', 'D']
+BONE_IDS = {}
+for b in CENTRAL:
+    BONE_IDS[b] = len(BONE_IDS)
+for b in SIDED:
+    for s in ('L', 'R'):
+        BONE_IDS[b + s] = len(BONE_IDS)
